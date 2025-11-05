@@ -1,0 +1,4 @@
+streamlit
+wn
+streamlit-agraph
+pd
