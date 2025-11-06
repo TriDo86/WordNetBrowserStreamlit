@@ -44,11 +44,54 @@ class WNSynset(Synset):
         Returns:
             Dictionary mapping relation types to lists of WNSynset objects.
         """
-        raw = self._wn_synset.relations()  # trả về dict[str, list[wn.Synset]]
+        # (1) Quan hệ của chính synset
+        synset_relations = dict(self._wn_synset.relations())
+
+        # (2) Gom toàn bộ quan hệ của các sense
+        all_sense_relations = {}
+
+        for s in self._wn_synset.senses():
+            sense_relations = s.relations()
+            for rel, targets in sense_relations.items():
+                if rel not in all_sense_relations:
+                    all_sense_relations[rel] = []
+                for t in targets:
+                    # Nếu là Sense → cố gắng lấy Synset tương ứng
+                    if isinstance(t, wn.Sense):
+                        try:
+                            target_synset = t.synset()
+                            all_sense_relations[rel].append(target_synset)
+                        except Exception:
+                            # Nếu sense chưa có synset hoặc lỗi → giữ nguyên
+                            all_sense_relations[rel].append(t)
+                    else:
+                        all_sense_relations[rel].append(t)
+
+        # (3) Gộp quan hệ của sense vào quan hệ của synset
+        for rel, targets in all_sense_relations.items():
+            if rel in synset_relations:
+                synset_relations[rel].extend(targets)
+            else:
+                synset_relations[rel] = targets
+
+        # (4) Loại trùng lặp (theo id)
+        for rel, targets in synset_relations.items():
+            seen = set()
+            unique_targets = []
+            for t in targets:
+                tid = getattr(t, "id", str(t))
+                if tid not in seen:
+                    seen.add(tid)
+                    unique_targets.append(t)
+            synset_relations[rel] = unique_targets
+
+        # Old version:
+        # raw = self._wn_synset.relations()  # trả về dict[str, list[wn.Synset]]
+
         # convert từng wn.Synset -> WNSynset
         return {
             rel: [WNSynset(ss) for ss in synsets]
-            for rel, synsets in raw.items()
+            for rel, synsets in synset_relations.items()
         }
 
     def relations_bfs(self, relation: str, max_depth: int = None, max_node: int = 200) -> Optional[Dict]:
