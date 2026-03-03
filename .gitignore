@@ -1,0 +1,5 @@
+# WordNet downloaded data (auto-generated on first run, ~300MB)
+lexicons/
+
+# Python bytecode cache
+backend/__pycache__/
