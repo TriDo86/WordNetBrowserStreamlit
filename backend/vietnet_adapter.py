@@ -229,7 +229,8 @@ class VietNetAdapter(WordNetAPI):
                 parent_dict[current_id] = None
                 continue
 
-            rels = synset.relations()
+            current_synset = adapter.synset(current_id)  # ← lấy đúng node hiện tại
+            rels = current_synset.relations()
             if relation not in rels:
                 parent_dict[current_id] = None
                 continue
