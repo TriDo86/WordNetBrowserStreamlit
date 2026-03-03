@@ -4,6 +4,20 @@ An interactive web application for exploring **English WordNet** and **Vietnames
 
 > 🌐 **Live Demo:** [wordnetbrowser-trido.streamlit.app/](https://wordnetbrowser-trido.streamlit.app/)
 
+## 🎬 Demo
+
+<table>
+  <tr>
+    <th align="center">🔍 WordNet Browser</th>
+    <th align="center">🌲 Lowest Common Hypernym</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/browse.gif" alt="WordNet Browser Demo" width="100%"/></td>
+    <td align="center"><img src="assets/lch.gif" alt="LCH Demo" width="100%"/></td>
+  </tr>
+</table>
+
+
 ---
 
 ## ✨ Features
