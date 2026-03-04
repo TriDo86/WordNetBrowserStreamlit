@@ -104,7 +104,7 @@ with inp_show_col:
 
 synsets_by_pos = [dict_pos_ss[pos] for dict_pos_ss in synsets_for_each_word]
 selected_ss, min_dist = utils.brute_force_select(groups=synsets_by_pos, 
-                                                    dist_func=lambda ss1, ss2: len(ss1.shortest_path(ss2) or []),
+                                                    dist_func = lambda ss1, ss2: 0 if ss1.id() == ss2.id() else len(ss1.shortest_path(ss2)),
                                                     target_func=utils.compute_pairwise_cost)
 lch = utils.lowest_common_hypernym(selected_ss)
 
