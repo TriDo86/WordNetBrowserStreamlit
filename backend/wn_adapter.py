@@ -85,9 +85,6 @@ class WNSynset(Synset):
                     unique_targets.append(t)
             synset_relations[rel] = unique_targets
 
-        # Old version:
-        # raw = self._wn_synset.relations()  # trả về dict[str, list[wn.Synset]]
-
         # convert từng wn.Synset -> WNSynset
         return {
             rel: [WNSynset(ss) for ss in synsets]

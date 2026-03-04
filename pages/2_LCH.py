@@ -100,11 +100,11 @@ with inp_pos_col:
             horizontal=True,
             label_visibility='collapsed')
 with inp_show_col:
-    show = st.selectbox(label='Show', options=['lemmas', 'id', 'lemmas + id'])
+    show = st.selectbox(label='Show', options=['lemmas', 'id', 'lemmas + id']) 
 
 synsets_by_pos = [dict_pos_ss[pos] for dict_pos_ss in synsets_for_each_word]
 selected_ss, min_dist = utils.brute_force_select(groups=synsets_by_pos, 
-                                                    dist_func=lambda ss1, ss2: len(ss1.shortest_path(ss2)),
+                                                    dist_func=lambda ss1, ss2: len(ss1.shortest_path(ss2) or []),
                                                     target_func=utils.compute_pairwise_cost)
 lch = utils.lowest_common_hypernym(selected_ss)
 
