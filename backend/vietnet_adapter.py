@@ -113,13 +113,15 @@ class VietNetAdapter(WordNetAPI):
         return self._lexicon
 
     def normalize_id(self, text: str) -> Optional[str]:
-        """Convert a synset ID into canonical form or None if invalid (wrong format, not found in wordnet)."""
+        """Convert a synset ID into canonical form or None if invalid."""
         if text is None:
             return None
-        
-        try: # check the id is valid
+
+        text = text.strip()  # tránh lỗi do khoảng trắng thừa
+
+        try:
             return self.synset(text).id()
-        except:
+        except Exception:
             return None
         
     def _to_synset_dict(self, row: pd.Series) -> Dict:

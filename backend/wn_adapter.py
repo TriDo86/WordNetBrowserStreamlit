@@ -188,22 +188,25 @@ class WNAdapter(WordNetAPI):
         """Convert a synset ID into canonical form or None if invalid (wrong format, not found in wordnet)."""
         if text is None:
             return text
-    
-        try: # check the id is valid
-            return self.synset(text).id()
-        
-        except: # if not found in wn, check if the numeric id is valid
-            prefix = self.lexicon.split(":")[0]
-            if fullmatch(r"\d{8}", text):
-                for p in ['n', 'v', 'a', 's', 'r']:
-                    candidate = f"{prefix}-{text}-{p}"
-                    try:
-                        self._wn.synset(candidate)
-                        return candidate
-                    except:
-                        continue
 
-            return None
+        text = text.strip()
+
+        try:
+            return self.synset(text).id()
+        except Exception:
+            pass
+
+        prefix = self.lexicon.split(":")[0]
+        if fullmatch(r"\d{8}", text):
+            for p in ['n', 'v', 'a', 's', 'r']:
+                candidate = f"{prefix}-{text}-{p}"
+                try:
+                    self._wn.synset(candidate)
+                    return candidate
+                except Exception:
+                    continue
+
+        return None
 
     def synset(self, sid: str) -> Optional[Synset]:
         """Return a Synset object by ID.
